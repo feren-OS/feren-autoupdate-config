@@ -1,0 +1,15 @@
+#!/bin/bash
+
+codename=$(cat /etc/feren-os-base)
+
+if [ "$codename" = "disco" ] || [ "$codename" = "cosmic" ] || [ "$codename" = "xenial" ]; then
+    sed -i "s/:codenamething/:$codename/g" /etc/apt/apt.conf.d/50unattended-upgrades
+else
+    sed -i "s/:codenamething/:bionic/g" /etc/apt/apt.conf.d/50unattended-upgrades
+fi
+if [ -f /etc/apt/apt.conf.d/50unattended-upgrades.dpkg-old ]; then
+    #Keep DPKG from complaining about the old config file being there still...
+    echo "W: Moving 50unattended-upgrades.dpkg-old to /tmp/"
+    mv /etc/apt/apt.conf.d/50unattended-upgrades.dpkg-old /tmp/
+fi
+exit 0
